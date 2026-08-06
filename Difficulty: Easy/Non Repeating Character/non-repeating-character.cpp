@@ -1,0 +1,18 @@
+
+class Solution {
+  public:
+    char nonRepeatingChar(string &s) {
+        //  code here
+        vector<int>freq(26,0);
+        for(char ch: s){
+            freq[ch-'a']++;
+        }
+        for(int i=0;i<s.length();i++){
+            if(freq[s[i]-'a']==1) {
+                return s[i];
+                break;
+            }
+        }
+        return '$';
+    }
+};
