@@ -13,27 +13,36 @@ public:
 */
 
 class Solution {
-public:
-    bool findPath(Node* root, int node, vector<int>& path) {
-        if (!root) return false;
-        
-        path.push_back(root->data);
-        
-        if (root->data == node) return true;
-        
-        if (findPath(root->left, node, path) || findPath(root->right, node, path))
-            return true;
-        
-        path.pop_back(); // backtrack
-        return false;
+  public:
+    Node* solve(Node* root, int &k,int node){
+        if(root==NULL) return NULL;
+        if(root->data == node) return root;
+        Node* leftAns = solve(root->left, k, node);
+        Node* rightAns = solve(root->right, k, node);
+        if(leftAns!=NULL && rightAns==NULL){
+            k--;
+            if(k==0){
+                
+                return root;
+            }
+            return leftAns;
+        }
+        if(leftAns==NULL && rightAns!=NULL){
+            k--;
+            if(k==0){
+                
+                return root;
+            }
+            return rightAns;
+        }
+        return NULL;
     }
-    
     int kthAncestor(Node *root, int k, int node) {
-        vector<int> path;
-        if (!findPath(root, node, path)) return -1;
-        
-        int idx = path.size() - k - 1;
-        if (idx < 0) return -1;
-        return path[idx];
+        // code here
+        Node* ans = solve(root, k, node);
+        if(ans==NULL || ans->data == node){
+            return -1;
+        }
+        else return ans->data;
     }
 };
